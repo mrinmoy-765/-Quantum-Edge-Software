@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="navbar bg-[#071400] p-4 lg:px-8 flex flex-wrap justify-between items-center">
+    <nav className="navbar bg-[#071400] p-4 lg:px-24 flex flex-wrap justify-between items-center ">
       {/* Left Side:  */}
       <div className="flex items-center gap-3.5">
         <img
