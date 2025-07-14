@@ -5,7 +5,7 @@ import React from "react";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="max-w-[1920px] mx-auto">
       <header>
         <Navbar></Navbar>
       </header>
