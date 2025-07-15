@@ -10,9 +10,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const SignUp = () => {
+const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
   const {
     register,
@@ -22,33 +21,32 @@ const SignUp = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    if (data.password !== data.confirm_password) {
-      toast.error("Passwords do not match");
-    } else {
-      const userInfo = {
-        first_name: data.first_name,
-        username: data.username,
+    // console.log(data.email);
+    // console.log(data.password);
+    axios
+      .post("https://api.mnimedu.com/api/auth/login/", {
         email: data.email,
         password: data.password,
-        confirm_password: data.confirm_password,
-      };
+      })
+      .then((res) => {
+        if (res.data.status) {
+          toast.success(res.data.message || "Login successful!");
 
-      axios
-        .post("http://api.mnimedu.com/api/auth/registration/", userInfo)
-        .then((res) => {
-          if (res.data.status) {
-            toast.success(res.data.message);
-          } else {
-            toast.error(res.data.message);
-          }
-        })
-        .catch((err) => {
-          const errorMsg =
-            err.response?.data?.message ||
-            "Something went wrong. Please try again.";
-          toast.error(errorMsg);
-        });
-    }
+          // Saving token to localStorage
+          localStorage.setItem("accessToken", res.data.token.access);
+          localStorage.setItem("refreshToken", res.data.token.refresh);
+
+          // navigate("/dashboard");
+        } else {
+          toast.error("Login failed");
+        }
+      })
+      .catch((err) => {
+        const errorMsg =
+          err.response?.data?.message ||
+          "Something went wrong. Please try again.";
+        toast.error(errorMsg);
+      });
   };
 
   return (
@@ -65,52 +63,16 @@ const SignUp = () => {
 
         <div className="text-center w-md flex flex-col items-center">
           <p className="text-4xl md:text-4xl font-bold text-white">
-            Open Your Account
+            Login your account
           </p>
           <p className="text-white mt-4 max-w-sm">
-            Already have an account?{" "}
-            <Link to="/SignIn">
-              <span className="text-[#05AF2B]"> Sign in</span>
+            Don’t have an account?{" "}
+            <Link to="/">
+              <span className="text-[#05AF2B]"> Sign Up</span>
             </Link>
           </p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
-            <div className="lg:flex w-xs gap-3.5">
-              {/* first name */}
-              <label className="input validator bg-transparent text-[#4B4B4B] rounded-full w-xs border-[#05AF2B] mt-6 focus-within:ring-2 focus-within:ring-[#05AF2B] focus-within:border-[#05AF2B]">
-                <input
-                  {...register("first_name", {
-                    required: "First Name is required",
-                  })}
-                  type="text"
-                  placeholder="First Name"
-                  className="focus:outline-none focus:ring-0"
-                />
-              </label>
-
-              {/* username */}
-              <label className="input validator bg-transparent text-[#4B4B4B] rounded-full w-xs border-[#05AF2B] mt-6 focus-within:ring-2 focus-within:ring-[#05AF2B] focus-within:border-[#05AF2B]">
-                <input
-                  {...register("username", {
-                    required: "User Name is required",
-                  })}
-                  type="text"
-                  placeholder="User Name"
-                  className="focus:outline-none focus:ring-0"
-                />
-              </label>
-            </div>
-            {errors.first_name && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.first_name.message}
-              </p>
-            )}
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.username.message}
-              </p>
-            )}
-            {/* email */}
-            <label className="input validator bg-transparent text-[#4B4B4B] rounded-full w-xs border-[#05AF2B] mt-2 focus-within:ring-2 focus-within:ring-[#05AF2B] focus-within:border-[#05AF2B]">
+            <label className="input validator bg-transparent text-[#4B4B4B] rounded-full w-xs border-[#05AF2B] mt-6 focus-within:ring-2 focus-within:ring-[#05AF2B] focus-within:border-[#05AF2B]">
               <svg
                 className="h-[1em] opacity-50"
                 xmlns="http://www.w3.org/2000/svg"
@@ -162,32 +124,8 @@ const SignUp = () => {
               </p>
             )}
 
-            {/* Confirm Password Field */}
-            <label className="input bg-transparent text-[#4B4B4B] rounded-full border-[#05AF2B] focus-within:ring-2 focus-within:ring-[#05AF2B] focus-within:border-[#05AF2B] flex items-center justify-between">
-              <FaLock />
-              <input
-                {...register("confirm_password", {
-                  required: "Confirm Password is required",
-                })}
-                type={showConfirm ? "text" : "password"}
-                placeholder="Confirm Password"
-                className="bg-transparent focus:outline-none flex-1"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="text-[#4B4B4B] focus:outline-none"
-              >
-                {showConfirm ? <FiEyeOff /> : <FiEye />}
-              </button>
-            </label>
-            {errors.confirm_password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.confirm_password.message}
-              </p>
-            )}
             <button className="btn bg-[#05AF2B] border-none text-white rounded-full w-xs px-8 py-2  hover:bg-[#049424]">
-              Create Account
+              Login Now
             </button>
           </form>
           <div className="divider before:bg-[#4B4B4B] after:bg-[#4B4B4B] my-10">
@@ -199,22 +137,6 @@ const SignUp = () => {
             <FaApple className="w-[6.5rem] h-[3rem] bg-[#1E1E1E] text-white p-2 rounded-full" />
             <BsTwitterX className="w-[6.5rem] h-[3rem] bg-[#1E1E1E] text-white p-2 rounded-full" />
           </div>
-          <p className="text-sm font-semibold mt-5 text-[#888888] text-center leading-none">
-            By joining, you agree to the Fiverr{" "}
-            <span className="text-[#05AF2B]">
-              <a href="">
-                {" "}
-                <u>Terms of Service</u>
-              </a>
-            </span>{" "}
-            and to occasionally receive emails from us. Please read our{" "}
-            <span className="text-[#05AF2B]">
-              <a href="">
-                <u>Privacy Policy</u>
-              </a>
-            </span>{" "}
-            to learn how we use your personal data.
-          </p>
         </div>
         {/* image */}
         <div className="relative z-10 w-full lg:w-2/3 overflow-hidden ">
@@ -232,4 +154,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
