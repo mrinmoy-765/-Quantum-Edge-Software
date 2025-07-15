@@ -124,12 +124,15 @@ const SignUp = () => {
           </p>
         </div>
         {/* image */}
-        <div className="relative z-10 w-full lg:w-2/3">
+        <div className="relative z-10 w-full lg:w-2/3 overflow-hidden ">
           <img
             src={group}
             alt="A group of professionals working together"
-            className="w-full h-auto lg:h-[40rem] object-cover rounded-lg"
+            className="w-full h-auto lg:h-[40rem] object-cover  inverted-radius rounded-lg"
           />
+          <button className="absolute top-1 right-3 bg-[#1A1A1A] text-[#05AF2B] rounded-full text-2xl px-4 py-2">
+            X
+          </button>
         </div>
       </div>
     </div>
