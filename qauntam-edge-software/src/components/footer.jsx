@@ -7,11 +7,9 @@ import footer from "../assets/footer.jpg";
 
 const Footer = () => {
   return (
-    // Use responsive padding: smaller on mobile, larger on desktop
     <div className="bg-[#071400] px-6 md:px-12 lg:px-24 py-9">
       {/* Div 1: Call to Action */}
       <div className="flex flex-col lg:flex-row justify-center items-center text-white gap-8 lg:gap-16 text-center lg:text-left">
-        {/* Use responsive font size and add max-width for readability */}
         <span className="text-2xl lg:text-3xl font-bold max-w-md">
           Reach Your Requirement Goals Right on Schedule
         </span>
@@ -30,12 +28,6 @@ const Footer = () => {
       </div>
 
       {/* Div 2: Footer Links Grid */}
-      {/*
-        Responsive Grid:
-        - 1 column on mobile (default)
-        - 2 columns on tablets (md:)
-        - 4 columns on desktops (lg:)
-      */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 my-8">
         {/* Item 1: Logo */}
         <div className="border-t border-[#CCCCCC] py-14 px-2">
@@ -124,7 +116,6 @@ const Footer = () => {
       </div>
 
       {/* Div 3: Socials and Popular Posts */}
-      {/* Stack vertically on mobile, row on desktop */}
       <div className="flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-4">
         <div className="relative">
           <div className="absolute w-[220px] h-[199px] bg-[#05AF2B] opacity-25 rounded-full blur-[173.4px] -top-10 z-0"></div>
@@ -137,7 +128,6 @@ const Footer = () => {
 
         <div className="text-center lg:text-left">
           <p className="text-lg font-bold text-white">Our Popular Posts</p>
-          {/* Stack posts on small screens, side-by-side on larger */}
           <div className="flex flex-col sm:flex-row mt-2 gap-4">
             <div className="flex items-center gap-2">
               <img
